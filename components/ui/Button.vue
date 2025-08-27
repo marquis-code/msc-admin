@@ -1,57 +1,76 @@
-<script setup lang="ts">
-import { computed } from "vue";
+<template>
+  <button
+    :disabled="disabled || loading"
+    :class="buttonClass"
+    class="relative inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+    @click="$emit('click', $event)"
+  >
+    <LoadingSpinner
+      v-if="loading"
+      size="sm"
+      class="mr-2"
+    />
+    <slot />
+  </button>
+</template>
 
+<script setup lang="ts">
 interface Props {
-  label?: string;
-  type?: "button" | "submit" | "reset";
-  variant?: "primary" | "secondary" | "danger" | "outlined";
+  variant?: 'primary' | 'secondary' | 'danger' | 'success';
+  size?: 'sm' | 'md' | 'lg';
   disabled?: boolean;
-  class?: string;
-  rounded?: boolean;
+  loading?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  label: "Click Me",
-  type: "button",
-  variant: "primary",
-  disabled: false,
-  class: "",
-  rounded: false,
-});
+const { variant = 'primary', size = 'md', disabled = false, loading = false } = defineProps<Props>();
 
-// 🎨 Base styles
-const baseClasses =
-  "px-3 py-1 font-semibold focus:outline-none transition-el transition-colors duration-200 flex items-center justify-center border";
+defineEmits<{
+  click: [event: MouseEvent];
+}>();
 
-// 🔹 Variant styles
-const variantClasses = computed(() => {
-  switch (props.variant) {
-    case "secondary":
-      return "bg-gray-200 text-gray-800 hover:bg-gray-300 border-transparent";
-    case "danger":
-      return "bg-red-500 text-white hover:bg-red-600 border-transparent";
-    case "outlined":
-      return "bg-transparent dark:border-dark-gray dark:text-white border border-gray-50 text-gray-700 hover:bg-primary/80 hover:text-white";
-    default: // primary
-      return "bg-primary text-white hover:bg-primary/80 border-transparent";
+const buttonClass = computed(() => {
+  let baseClass = '';
+  
+  // Size classes
+  switch (size) {
+    case 'sm':
+      baseClass += 'px-3 py-1.5 text-xs ';
+      break;
+    case 'lg':
+      baseClass += 'px-6 py-3 text-base ';
+      break;
+    default:
+      baseClass += 'px-4 py-2 text-sm ';
   }
+  
+  // Variant classes
+  switch (variant) {
+    case 'primary':
+      baseClass += 'bg-primary text-white hover:bg-primary/90 ';
+      break;
+    case 'secondary':
+      baseClass += 'bg-gray-200 text-gray-800 hover:bg-gray-300 ';
+      break;
+    case 'danger':
+      baseClass += 'bg-red-600 text-white hover:bg-red-700 ';
+      break;
+    case 'success':
+      baseClass += 'bg-green-600 text-white hover:bg-green-700 ';
+      break;
+  }
+  
+  return baseClass;
 });
 </script>
 
-<template>
-  <div>
-    <button
-      :type="props.type"
-      :disabled="props.disabled"
-      :class="[
-        baseClasses,
-        variantClasses,
-        props.rounded ? 'rounded-full' : 'rounded-md',
-        props.disabled ? 'opacity-50 cursor-not-allowed' : '',
-        props.class,
-      ]"
-    >
-      <slot>{{ props.label }}</slot>
-    </button>
-  </div>
-</template>
+<style scoped>
+.bg-primary {
+  background-color: #00b8AE;
+}
+.hover\\:bg-primary\\/90:hover {
+  background-color: rgba(0, 184, 174, 0.9);
+}
+.focus\\:ring-primary:focus {
+  ring-color: #00b8AE;
+}
+</style>

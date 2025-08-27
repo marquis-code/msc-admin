@@ -136,6 +136,7 @@ export default defineNuxtConfig({
   // Set public runtime config
   runtimeConfig: {
     public: {
+      apiBase: '/api',
       siteUrl: "https://msc.africa.com",
       supabaseUrl: process.env.NUXT_PUBLIC_SUPABASE_URL,
       supabaseAnonKey: process.env.NUXT_PUBLIC_SUPABASE_ANON_KEY,
