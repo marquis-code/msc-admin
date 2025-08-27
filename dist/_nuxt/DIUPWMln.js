@@ -1,0 +1,1 @@
+import"./L-hHjXWe.js";const e=()=>[{path:"/",title:"Home"},{path:"/about",title:"About Us"},{path:"/products",title:"Products"},{path:"/services",title:"Our Services"},{path:"/partners",title:"Partners"},{path:"/contact",title:"Contact Us"}],r=""+new URL("msc-logo-transparent.glFxCXQ1.png",import.meta.url).href;export{r as _,e as u};
